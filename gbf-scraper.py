@@ -48,13 +48,13 @@ def log(message):
     '''Prints to console and outputs to log file'''
 
     try:
-        with open('.\\logs\\' + LOG_FILE, 'a',
+        with open('./logs/' + LOG_FILE, 'a',
                   encoding='utf-8', newline='') as fout:
             message = '[%s] %s' % (strftime('%a %H:%M:%S'), message)
             print(message)
             print(message, file=fout)
     except FileNotFoundError:
-        makedirs('.\\logs')
+        makedirs('./logs')
         log('Created log folder')
         log(message)
 
@@ -198,7 +198,7 @@ def handler(baseurl, parse_type, first, last, **kwargs):
 
 def guild_members():
     directory = CFG.base_dir + \
-        '\\GW{}\\Guilds\\Information\\'.format(GW_NUMBER)
+        '/GW{}/Guilds/Information/'.format(GW_NUMBER)
     filename = directory + \
         '[{}]guild_members.csv'.format(strftime('%m-%d_%H%M'))
     header = ('name', 'level', 'position', 'id',
@@ -230,7 +230,7 @@ def gw_guild(first, last, seed_first, seed_last):
     baseurl = 'http://game.granbluefantasy.jp/teamraid0{}/ranking_guild/detail/{}'.format(
         GW_NUMBER, {})
     header = ('rank', 'name', 'battles', 'honor', 'id')
-    directory = CFG.base_dir + '\\GW{}\\Guilds\\Ranking\\'.format(GW_NUMBER)
+    directory = CFG.base_dir + '/GW{}/Guilds/Ranking/'.format(GW_NUMBER)
     filename = directory + '[{}]Preliminary_Guild_Rankings.csv'.format(
         strftime('%m-%d_%H%M'))
     makedirs(directory, exist_ok=True)
@@ -251,7 +251,7 @@ def gw_guild(first, last, seed_first, seed_last):
 
 def gw_individual(first, last):
     # headers = ('rank', 'name', 'battles', 'honor', 'level', 'id')
-    directory = CFG.base_dir + '\\GW{}\\Individual\\'.format(GW_NUMBER)
+    directory = CFG.base_dir + '/GW{}/Individual/'.format(GW_NUMBER)
     filename = (directory + '[{}]granblue-scraper_top80k({}-{}).csv'.format(
         strftime('%m-%d_%H%M'), first, last))
     url = 'http://game.granbluefantasy.jp/teamraid0{}/rest_ranking_user/detail/{}'.format(
@@ -262,9 +262,9 @@ def gw_individual(first, last):
 
 def guild_ranks(guild_id):
     url = 'http://game.granbluefantasy.jp/guild_other/member_list/{}/{}'
-    filename = ('.\\guild_{}\\[{}]ranks.csv'.format(
+    filename = ('./guild_{}/[{}]ranks.csv'.format(
         guild_id, strftime('%m-%d_%H%M')))
-    makedirs('.\\guild_{}'.format(guild_id), exist_ok=True)
+    makedirs('./guild_{}'.format(guild_id), exist_ok=True)
     rows = handler(url.format({}, guild_id), 'guild_ranks', 1, 3)
     csv_writer(rows, filename)
 
@@ -272,7 +272,7 @@ def guild_ranks(guild_id):
 def main():
     global GBF
     timestart = time_now()
-    profile = path.abspath(".\\" + CFG.profile)
+    profile = path.abspath("./" + CFG.profile)
 
     parser = argparse.ArgumentParser(prog='gbf-scraper.py',
                                      description='A simple script for scraping various parts of Granblue Fantasy',
@@ -299,7 +299,7 @@ def main():
 
     if args.profile is not None:
         log('Changing profile path to {}'.format(args.profile))
-        profile = path.abspath('.\\' + args.profile)
+        profile = path.abspath('./' + args.profile)
 
     options = webdriver.ChromeOptions()
     log('Using profile at: {}'.format(profile))

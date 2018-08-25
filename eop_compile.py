@@ -12,9 +12,9 @@ if ZIP:
 
 GW_NO = 33
 
-ROOT_DIR = f'.\\GW{GW_NO}\\Guilds\\'
-INV_DIR = f'.\\GW{GW_NO}\\Individual\\'
-INF_DIR = ROOT_DIR + 'Information\\'
+ROOT_DIR = f'./GW{GW_NO}/Guilds/'
+INV_DIR = f'./GW{GW_NO}/Individual/'
+INF_DIR = ROOT_DIR + 'Information/'
 PRELIMS_CSV = INV_DIR + 'Prelims_80k.csv'
 INTLUDE_CSV = INV_DIR + 'Top80k_Interlude.csv'
 DAY1_CSV = INV_DIR + 'Finals_1_80k.csv'
@@ -25,7 +25,7 @@ DAY5_CSV = INV_DIR + '[09-30_0023]GW33_finals5_80k_individuals.csv'
 
 
 def get_last_modified(dir, contains=None):
-    dir = os.path.abspath(dir) + '\\'
+    dir = os.path.abspath(dir) + '/'
     files = list(map(lambda x: dir + x, os.listdir(dir)))
     if contains is not None:
         temp_files = list()
@@ -145,10 +145,10 @@ guilds_df = guilds_df[['guild_name', 'guild_alias', 'honors_sum', 'id', 'faction
 guilds_df.sort_values('honors_sum', inplace=True, ascending=False)
 
 # Output our data
-os.makedirs(ROOT_DIR + f'Processed\\', exist_ok=True)
+os.makedirs(ROOT_DIR + f'Processed/', exist_ok=True)
 
 with pandas.ExcelWriter(ROOT_DIR +
-                        f'Processed\\GW{GW_NO}_EOP_rankings.xlsx') as writer:
+                        f'Processed/GW{GW_NO}_EOP_rankings.xlsx') as writer:
     gw_total_stats.to_excel(
         writer, index=True, header=False, sheet_name='GW Stats')
     guilds_df.to_excel(writer, index=False, sheet_name='Guild Rankings')
@@ -156,7 +156,7 @@ with pandas.ExcelWriter(ROOT_DIR +
 
 if ZIP:
     with zipfile.ZipFile(ROOT_DIR +
-                         f'Processed\\GW{GW_NO}_EOP_rankings.csv.zip',
+                         f'Processed/GW{GW_NO}_EOP_rankings.csv.zip',
                          mode='w', compression=zipfile.ZIP_LZMA) as fout:
         fout.writestr(f'GW{GW_NO}_total_stats.csv',
                       gw_total_stats.to_csv(
@@ -169,13 +169,13 @@ if ZIP:
                           index=False, float_format='%.0f', encoding='utf-8'))
 else:
     gw_total_stats.to_csv(ROOT_DIR +
-                          f'Processed\\GW{GW_NO}_total_stats.csv',
+                          f'Processed/GW{GW_NO}_total_stats.csv',
                           header=False, sep=':', encoding='utf-8')
     guilds_df.to_csv(ROOT_DIR +
-                     f'Processed\\GW{GW_NO}_guild_rankings.csv',
+                     f'Processed/GW{GW_NO}_guild_rankings.csv',
                      index=False, encoding='utf-8')
     result.to_csv(ROOT_DIR +
-                  f'Processed\\GW{GW_NO}_individual_ranks.csv',
+                  f'Processed/GW{GW_NO}_individual_ranks.csv',
                   index=False, float_format='%.0f', encoding='utf-8')
 
 
